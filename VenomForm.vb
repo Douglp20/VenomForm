@@ -42,6 +42,8 @@ Err:
                 frm.Width = width.ToString()
             End If
         End If
+
+
         SetControlProperties(frm, frm.Name.ToString, "load")
 
 
@@ -57,6 +59,35 @@ Err:
 
     Private Sub SetControlProperties(control As System.Windows.Forms.Control, formName As String, action As String)
         On Error GoTo Err
+        If control.GetType.ToString = "System.Windows.Forms.DataGridView" Then
+            Dim dgv As New System.Windows.Forms.DataGridView
+            dgv = CType(control, System.Windows.Forms.DataGridView)
+            Dim strKey As String = formName + dgv.Name.ToString
+            Dim col As Integer = dgv.Columns.Count
+            Dim widthsize As String
+            Dim iwidth As Integer
+
+            If action = "load" Then
+                For c As Integer = 0 To dgv.Columns.Count - 1
+                    widthsize = VenomRegistry.GetSetting("DATAGRIDVIEW", strKey + "col" + c.ToString, 60)
+                    If c = 0 Then
+                        If dgv.Columns(c).HeaderText = "ID" Then
+                            dgv.Columns(c).Visible = False
+                        Else
+                            dgv.Columns(c).Width = widthsize.ToString
+                        End If
+                    Else
+                        dgv.Columns(c).Width = widthsize.ToString
+                    End If
+                Next
+            Else
+                For c As Integer = 0 To col - 1
+                    iwidth = dgv.Columns(c).Width
+                    VenomRegistry.SaveSetting("DATAGRIDVIEW", strKey + "col" + c.ToString, iwidth.ToString)
+
+                Next
+            End If
+        End If
 
         If control.GetType.ToString = "System.Windows.Forms.ListView" Then
             Dim lvw As New System.Windows.Forms.ListView
@@ -70,14 +101,15 @@ Err:
                 For i As Integer = 0 To col - 1
 
                     If i = 0 And lvw.CheckBoxes = True Then
-                        lvw.Columns(i).Width = 18
+                        If lvw.Columns.Count > 1 Then lvw.Columns(i).Width = 18
                     Else
-                        If i = 0 And lvw.CheckBoxes = False Then
+                            If i = 0 And lvw.CheckBoxes = False Then
                             lvw.Columns(i).Width = 0
                         Else
                             widthsize = VenomRegistry.GetSetting("LISTVIEW", strKey + "col" + i.ToString, 60)
-                            If widthsize = "0" Then
-                                lvw.Columns(i).Width = 60
+
+                            If lvw.Columns(i).Tag = "hide" Then
+                                lvw.Columns(i).Width = 0
                             Else
                                 lvw.Columns(i).Width = widthsize.ToString
                             End If
@@ -110,7 +142,7 @@ Err:
         On Error GoTo Err
 
 
-
+        RefreshForm(frm)
         SetControlDataLoad(frm, frm.Name.ToString, ds)
 
 
@@ -386,6 +418,41 @@ Err:
                         Next
                     Next
                 End If
+            Case = "System.Windows.Forms.MaskedTextBox"
+                Dim msk As New System.Windows.Forms.MaskedTextBox
+                msk = CType(control, System.Windows.Forms.MaskedTextBox)
+                Dim tagField As String
+                Dim dataField As String
+                Dim dataValue As String
+                Dim dataType As String
+                Dim mskNameTag As String
+                Dim mskName As String
+                ' Dim c As Integer = 0
+
+                If ds.Tables(0).Rows.Count > 0 Then
+                    For Each row As DataRow In ds.Tables(0).Rows
+                        For c As Integer = 0 To row.ItemArray.Count - 1
+                            ' dataType = ds.Tables(0).Rows(0).Item(c).GetType().ToString
+                            dataType = row.Table.Columns(c).DataType().ToString
+                            dataField = row.Table.Columns(c).ColumnName
+                            strDataField = dataField
+                            mskNameTag = msk.Tag
+                            mskName = msk.Name
+                            strFieldName = mskName.ToString
+
+                            If Len(mskNameTag) > 0 Then
+                                If dataField.ToLower() = mskNameTag.ToLower() Then
+                                    Select Case dataType.ToString
+                                        Case "System.String"
+                                            msk.Text = row(mskNameTag).ToString
+                                        Case Else
+                                            msk.Text = CType(row(mskNameTag).ToString, String)
+                                    End Select
+                                End If
+                            End If
+                        Next
+                    Next
+                End If
             Case Else
 
         End Select
@@ -434,7 +501,13 @@ Err:
                 Else
                     txt.Clear()
                 End If
-
+            Case "System.Windows.Forms.MaskedTextBox"
+                Dim txt As New System.Windows.Forms.MaskedTextBox
+                txt = CType(control, System.Windows.Forms.MaskedTextBox)
+                If txt.Tag = "" Then
+                Else
+                    txt.Clear()
+                End If
             Case "System.Windows.Forms.ComboBox"
                 Dim cbo As New System.Windows.Forms.ComboBox
                 cbo = CType(control, System.Windows.Forms.ComboBox)
