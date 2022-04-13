@@ -42,8 +42,6 @@ Err:
                 frm.Width = width.ToString()
             End If
         End If
-
-
         SetControlProperties(frm, frm.Name.ToString, "load")
 
 
@@ -142,7 +140,7 @@ Err:
         On Error GoTo Err
 
 
-        RefreshForm(frm)
+
         SetControlDataLoad(frm, frm.Name.ToString, ds)
 
 
@@ -197,6 +195,44 @@ Err:
                         Next
                     Next
                 End If
+            Case "System.Windows.Forms.MaskedTextBox"
+
+
+                Dim msk As New System.Windows.Forms.MaskedTextBox
+                msk = CType(control, System.Windows.Forms.MaskedTextBox)
+                Dim tagField As String
+                Dim dataField As String
+                Dim dataValue As String
+                Dim dataType As String
+                Dim mskNameTag As String
+                Dim mskName As String
+                ' Dim c As Integer = 0
+
+                If ds.Tables(0).Rows.Count > 0 Then
+                    For Each row As DataRow In ds.Tables(0).Rows
+                        For c As Integer = 0 To row.ItemArray.Count - 1
+                            dataType = row.Table.Columns(c).DataType().ToString
+                            dataField = row.Table.Columns(c).ColumnName
+                            strDataField = dataField
+                            mskNameTag = msk.Tag
+                            mskName = msk.Name
+                            strFieldName = mskName.ToString
+
+                            If Len(mskNameTag) > 0 Then
+                                If dataField.ToLower() = mskNameTag.ToLower() Then
+                                    Select Case dataType.ToString
+                                        Case "System.String"
+                                            msk.Text = row(mskNameTag).ToString
+                                        Case Else
+                                            msk.Text = CType(row(mskNameTag).ToString, String)
+
+                                    End Select
+                                End If
+                            End If
+                        Next
+                    Next
+                End If
+
             Case "System.Windows.Forms.RichTextBox"
 
                 Dim rtx As New System.Windows.Forms.RichTextBox
@@ -418,43 +454,6 @@ Err:
                         Next
                     Next
                 End If
-            Case = "System.Windows.Forms.MaskedTextBox"
-                Dim msk As New System.Windows.Forms.MaskedTextBox
-                msk = CType(control, System.Windows.Forms.MaskedTextBox)
-                Dim tagField As String
-                Dim dataField As String
-                Dim dataValue As String
-                Dim dataType As String
-                Dim mskNameTag As String
-                Dim mskName As String
-                ' Dim c As Integer = 0
-
-                If ds.Tables(0).Rows.Count > 0 Then
-                    For Each row As DataRow In ds.Tables(0).Rows
-                        For c As Integer = 0 To row.ItemArray.Count - 1
-                            ' dataType = ds.Tables(0).Rows(0).Item(c).GetType().ToString
-                            dataType = row.Table.Columns(c).DataType().ToString
-                            dataField = row.Table.Columns(c).ColumnName
-                            strDataField = dataField
-                            mskNameTag = msk.Tag
-                            mskName = msk.Name
-                            strFieldName = mskName.ToString
-
-                            If Len(mskNameTag) > 0 Then
-                                If dataField.ToLower() = mskNameTag.ToLower() Then
-                                    Select Case dataType.ToString
-                                        Case "System.String"
-                                            msk.Text = row(mskNameTag).ToString
-                                        Case Else
-                                            msk.Text = CType(row(mskNameTag).ToString, String)
-                                    End Select
-                                End If
-                            End If
-                        Next
-                    Next
-                End If
-            Case Else
-
         End Select
 
 
@@ -502,11 +501,11 @@ Err:
                     txt.Clear()
                 End If
             Case "System.Windows.Forms.MaskedTextBox"
-                Dim txt As New System.Windows.Forms.MaskedTextBox
-                txt = CType(control, System.Windows.Forms.MaskedTextBox)
-                If txt.Tag = "" Then
+                Dim msk As New System.Windows.Forms.TextBox
+                msk = CType(control, System.Windows.Forms.TextBox)
+                If msk.Tag = "" Then
                 Else
-                    txt.Clear()
+                    msk.Clear()
                 End If
             Case "System.Windows.Forms.ComboBox"
                 Dim cbo As New System.Windows.Forms.ComboBox
