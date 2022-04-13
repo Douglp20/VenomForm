@@ -501,8 +501,8 @@ Err:
                     txt.Clear()
                 End If
             Case "System.Windows.Forms.MaskedTextBox"
-                Dim msk As New System.Windows.Forms.TextBox
-                msk = CType(control, System.Windows.Forms.TextBox)
+                Dim msk As New System.Windows.Forms.MaskedTextBox
+                msk = CType(control, System.Windows.Forms.MaskedTextBox)
                 If msk.Tag = "" Then
                 Else
                     msk.Clear()
