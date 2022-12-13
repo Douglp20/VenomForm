@@ -1,6 +1,7 @@
 ﻿Imports System.Runtime.InteropServices.WindowsRuntime
 Imports System.Windows.Forms
 
+
 Public Class VenomForm
     Private VenomRegistry As New Douglas.Venom.Registry.VenomRegistry
     Public Event ErrorMessage(ByVal errDesc As String, ByVal errNo As Integer, ByVal errTrace As String)
@@ -374,7 +375,47 @@ Err:
                         Next
                     Next
                 End If
+            Case "System.Windows.Forms.PictureBox"
 
+                Dim pic As New System.Windows.Forms.PictureBox
+                pic = CType(control, System.Windows.Forms.PictureBox)
+                pic.Image = Nothing
+                Dim picField As String
+                Dim dataField As String
+                Dim dataValue As String
+                Dim dataType As String
+                Dim picName As String = pic.Name
+                Dim picNameTag As String = pic.Tag
+
+
+
+                If ds.Tables(0).Rows.Count > 0 Then
+                        Dim converter As New System.Drawing.ImageConverter
+                        Dim dataPicture As Byte()
+
+                    For Each row As DataRow In ds.Tables(0).Rows
+                        For c As Integer = 0 To row.ItemArray.Count - 1
+
+                            dataType = row.Table.Columns(c).DataType().ToString
+                            dataField = row.Table.Columns(c).ColumnName
+                            strDataField = dataField
+                            picNameTag = pic.Tag
+                            picName = pic.Name
+                            strFieldName = picName.ToString
+                            If Len(picNameTag) > 0 Then
+                                Select Case dataType.ToString()
+                                    Case "System.Byte[]"
+                                        If Not String.IsNullOrEmpty(row(dataField).ToString()) Then
+                                            Dim DataImage As Byte() = DirectCast(row(dataField), Byte())
+                                            Dim msPicture As System.IO.MemoryStream = New System.IO.MemoryStream(DataImage)
+                                            pic.Image = System.Drawing.Image.FromStream(msPicture)
+                                        End If
+                                End Select
+                            End If
+
+                        Next
+                    Next
+                End If
 
             Case "System.Windows.Forms.GroupBox"
 
