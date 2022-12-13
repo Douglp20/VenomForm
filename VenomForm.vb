@@ -541,6 +541,13 @@ Err:
                 Else
                     txt.Clear()
                 End If
+            Case "System.Windows.Forms.PictureBox"
+                Dim pic As New System.Windows.Forms.PictureBox
+                pic = CType(control, System.Windows.Forms.PictureBox)
+                If pic.Tag = "" Then
+                Else
+                    pic.Image = Nothing
+                End If
             Case "System.Windows.Forms.MaskedTextBox"
                 Dim msk As New System.Windows.Forms.MaskedTextBox
                 msk = CType(control, System.Windows.Forms.MaskedTextBox)
