@@ -407,8 +407,10 @@ Err:
                                     Case "System.Byte[]"
                                         If Not String.IsNullOrEmpty(row(dataField).ToString()) Then
                                             Dim DataImage As Byte() = DirectCast(row(dataField), Byte())
-                                            Dim msPicture As System.IO.MemoryStream = New System.IO.MemoryStream(DataImage)
-                                            pic.Image = System.Drawing.Image.FromStream(msPicture)
+                                            If DataImage.Length > 0 Then
+                                                Dim msPicture As System.IO.MemoryStream = New System.IO.MemoryStream(DataImage)
+                                                pic.Image = System.Drawing.Image.FromStream(msPicture)
+                                            End If
                                         End If
                                 End Select
                             End If
