@@ -34,20 +34,37 @@ Err:
         Dim Left As String = VenomRegistry.GetSetting("FORMSETTING", frm.Name + "Left", "0")
         Dim width As String = VenomRegistry.GetSetting("FORMSETTING", frm.Name + "Width", "0")
         Dim height As String = VenomRegistry.GetSetting("FORMSETTING", frm.Name + "Height", "0")
-        If frm.FormBorderStyle = FormBorderStyle.FixedSingle Then
-            frm.FormBorderStyle = FormBorderStyle.Sizable
-            frm.Top = top.ToString()
-            frm.Left = Left.ToString()
-            frm.Height = height.ToString()
-            frm.Width = width.ToString()
-            frm.FormBorderStyle = FormBorderStyle.FixedSingle
+
+        If width = 0 Then
+            top = 3
+            Left = 3
+            width = frm.Width + 200
+            height = frm.Height
+            If frm.FormBorderStyle = FormBorderStyle.FixedSingle Then
+                frm.FormBorderStyle = FormBorderStyle.Sizable
+                frm.Top = top.ToString()
+                frm.Left = Left.ToString()
+                frm.Height = height.ToString()
+                frm.Width = width.ToString()
+            End If
         Else
-            frm.Top = top.ToString()
-            frm.Left = Left.ToString()
-            frm.Height = height.ToString()
-            frm.Width = width.ToString()
+
+
+                If frm.FormBorderStyle = FormBorderStyle.FixedSingle Then
+                frm.FormBorderStyle = FormBorderStyle.Sizable
+                frm.Top = top.ToString()
+                frm.Left = Left.ToString()
+                frm.Height = height.ToString()
+                frm.Width = width.ToString()
+                frm.FormBorderStyle = FormBorderStyle.FixedSingle
+            Else
+                frm.Top = top.ToString()
+                frm.Left = Left.ToString()
+                frm.Height = height.ToString()
+                frm.Width = width.ToString()
+            End If
         End If
-            SetControlProperties(frm, frm.Name.ToString, "load")
+        SetControlProperties(frm, frm.Name.ToString, "load")
 
 
             Exit Sub
