@@ -34,16 +34,20 @@ Err:
         Dim Left As String = VenomRegistry.GetSetting("FORMSETTING", frm.Name + "Left", "0")
         Dim width As String = VenomRegistry.GetSetting("FORMSETTING", frm.Name + "Width", "0")
         Dim height As String = VenomRegistry.GetSetting("FORMSETTING", frm.Name + "Height", "0")
-        If (width = "0") Or (height = "0") Then
+        If frm.FormBorderStyle = FormBorderStyle.FixedSingle Then
+            frm.FormBorderStyle = FormBorderStyle.Sizable
+            frm.Top = top.ToString()
+            frm.Left = Left.ToString()
+            frm.Height = height.ToString()
+            frm.Width = width.ToString()
+            frm.FormBorderStyle = FormBorderStyle.FixedSingle
         Else
             frm.Top = top.ToString()
             frm.Left = Left.ToString()
-            If frm.FormBorderStyle = FormBorderStyle.Sizable Then
-                frm.Height = height.ToString()
-                frm.Width = width.ToString()
-            End If
+            frm.Height = height.ToString()
+            frm.Width = width.ToString()
         End If
-        SetControlProperties(frm, frm.Name.ToString, "load")
+            SetControlProperties(frm, frm.Name.ToString, "load")
 
 
             Exit Sub
