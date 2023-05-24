@@ -40,29 +40,21 @@ Err:
             Left = 3
             width = frm.Width + 200
             height = frm.Height
-            If frm.FormBorderStyle = FormBorderStyle.FixedSingle Then
-                frm.FormBorderStyle = FormBorderStyle.Sizable
-                frm.Top = top.ToString()
-                frm.Left = Left.ToString()
-                frm.Height = height.ToString()
-                frm.Width = width.ToString()
-            End If
+
+            frm.FormBorderStyle = FormBorderStyle.Sizable
+            frm.Top = top.ToString()
+            frm.Left = Left.ToString()
+            frm.Height = height.ToString()
+            frm.Width = width.ToString()
+
         Else
-
-
-                If frm.FormBorderStyle = FormBorderStyle.FixedSingle Then
-                frm.FormBorderStyle = FormBorderStyle.Sizable
-                frm.Top = top.ToString()
-                frm.Left = Left.ToString()
+            frm.FormBorderStyle = FormBorderStyle.Sizable
+            frm.Top = top.ToString()
+            frm.Left = Left.ToString()
                 frm.Height = height.ToString()
                 frm.Width = width.ToString()
-                frm.FormBorderStyle = FormBorderStyle.FixedSingle
-            Else
-                frm.Top = top.ToString()
-                frm.Left = Left.ToString()
-                frm.Height = height.ToString()
-                frm.Width = width.ToString()
-            End If
+            frm.FormBorderStyle = FormBorderStyle.FixedSingle
+
         End If
         SetControlProperties(frm, frm.Name.ToString, "load")
 
