@@ -46,15 +46,17 @@ Err:
             frm.Left = Left.ToString()
             frm.Height = height.ToString()
             frm.Width = width.ToString()
-
-        Else
-            frm.FormBorderStyle = FormBorderStyle.Sizable
+        End If
+        If frm.FormBorderStyle = FormBorderStyle.FixedSingle Then
             frm.Top = top.ToString()
             frm.Left = Left.ToString()
-                frm.Height = height.ToString()
-                frm.Width = width.ToString()
-            frm.FormBorderStyle = FormBorderStyle.FixedSingle
+        End If
 
+        If frm.FormBorderStyle = FormBorderStyle.Sizable Then
+            frm.Top = top.ToString()
+            frm.Left = Left.ToString()
+            frm.Height = height.ToString()
+            frm.Width = width.ToString()
         End If
         SetControlProperties(frm, frm.Name.ToString, "load")
 
