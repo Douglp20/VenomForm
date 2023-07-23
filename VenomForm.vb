@@ -1,5 +1,4 @@
-﻿Imports System.Runtime.InteropServices.WindowsRuntime
-Imports System.Windows.Forms
+﻿Imports System.Windows.Forms
 
 
 Public Class VenomForm
@@ -35,17 +34,24 @@ Err:
         Dim width As String = VenomRegistry.GetSetting("FORMSETTING", frm.Name + "Width", "0")
         Dim height As String = VenomRegistry.GetSetting("FORMSETTING", frm.Name + "Height", "0")
 
-        If width = 0 Then
+        If width = frm.Width Then
             top = 3
             Left = 3
-            width = frm.Width + 200
-            height = frm.Height
+            'width = frm.Width + 200
+            'height = frm.Height
 
-            frm.FormBorderStyle = FormBorderStyle.Sizable
+            'frm.FormBorderStyle = FormBorderStyle.Sizable
             frm.Top = top.ToString()
             frm.Left = Left.ToString()
             frm.Height = height.ToString()
             frm.Width = width.ToString()
+        End If
+        If Not width = frm.Width Then
+            top = 3
+            Left = 3
+            'width = frm.Width + 200
+            'height = frm.Height
+            frm.FormBorderStyle = FormBorderStyle.Sizable
         End If
         If frm.FormBorderStyle = FormBorderStyle.FixedSingle Then
             frm.Top = top.ToString()
@@ -61,7 +67,7 @@ Err:
         SetControlProperties(frm, frm.Name.ToString, "load")
 
 
-            Exit Sub
+        Exit Sub
 
 Err:
         Dim rtn As String = "The error occur within the module " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + Me.ToString() + "."
@@ -117,7 +123,7 @@ Err:
                     If i = 0 And lvw.CheckBoxes = True Then
                         If lvw.Columns.Count > 1 Then lvw.Columns(i).Width = 18
                     Else
-                            If i = 0 And lvw.CheckBoxes = False Then
+                        If i = 0 And lvw.CheckBoxes = False Then
                             lvw.Columns(i).Width = 0
                         Else
                             widthsize = VenomRegistry.GetSetting("LISTVIEW", strKey + "col" + i.ToString, 60)
@@ -405,8 +411,8 @@ Err:
 
 
                 If ds.Tables(0).Rows.Count > 0 Then
-                        Dim converter As New System.Drawing.ImageConverter
-                        Dim dataPicture As Byte()
+                    Dim converter As New System.Drawing.ImageConverter
+                    Dim dataPicture As Byte()
 
                     For Each row As DataRow In ds.Tables(0).Rows
                         For c As Integer = 0 To row.ItemArray.Count - 1
