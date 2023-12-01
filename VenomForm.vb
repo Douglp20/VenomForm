@@ -37,22 +37,18 @@ Err:
         If width = frm.Width Then
             top = 3
             Left = 3
-            'width = frm.Width + 200
-            'height = frm.Height
-
-            'frm.FormBorderStyle = FormBorderStyle.Sizable
             frm.Top = top.ToString()
             frm.Left = Left.ToString()
             frm.Height = height.ToString()
             frm.Width = width.ToString()
         End If
-        If Not width = frm.Width Then
-            top = 3
-            Left = 3
-            'width = frm.Width + 200
-            'height = frm.Height
-            frm.FormBorderStyle = FormBorderStyle.Sizable
-        End If
+        'If Not width = frm.Width Then
+        '    top = 3
+        '    Left = 3
+        '    'width = frm.Width + 200
+        '    'height = frm.Height
+        '    frm.FormBorderStyle = FormBorderStyle.Sizable
+        'End If
         If frm.FormBorderStyle = FormBorderStyle.FixedSingle Then
             frm.Top = top.ToString()
             frm.Left = Left.ToString()
