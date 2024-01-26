@@ -39,8 +39,8 @@ Err:
             Left = 3
             frm.Top = top.ToString()
             frm.Left = Left.ToString()
-            frm.Height = height.ToString()
-            frm.Width = width.ToString()
+            '' frm.Height = height.ToString()
+            ''frm.Width = width.ToString()
         End If
         'If Not width = frm.Width Then
         '    top = 3
@@ -57,8 +57,8 @@ Err:
         If frm.FormBorderStyle = FormBorderStyle.Sizable Then
             frm.Top = top.ToString()
             frm.Left = Left.ToString()
-            frm.Height = height.ToString()
-            frm.Width = width.ToString()
+            '' frm.Height = height.ToString()
+            '' frm.Width = width.ToString()
         End If
         SetControlProperties(frm, frm.Name.ToString, "load")
 
